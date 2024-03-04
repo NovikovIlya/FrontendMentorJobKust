@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
+import {useQuery} from '@tanstack/vue-query';
 import { ref } from 'vue';
 
 //data
 const param = ref('');
 
 //composables
-const { isPending, isError, data, error } = useQuery({
+const { isPending, isError, data } = useQuery({
   queryKey: ['todos', param],
   queryFn: () => getTodos(param),
 });
