@@ -10,17 +10,15 @@ const { isPending, isError, data, error } = useQuery({
   queryKey: ['todos', param],
   queryFn: () => getTodos(param),
 });
-console.log(data);
-const getTodos = async (param) => {
-  const res = await fetch(
-    `https://62e737420d7b3479.mokky.dev/all${param.value}`
-  );
+
+const getTodos = async (param: any) => {
+  const res = await fetch(`https://62e737420d7b3479.mokky.dev/all${param.value}`);
   const data = await res.json();
   return data;
 };
 
 //functions
-const switchTag = (tag) => {
+const switchTag = (tag: any) => {
   //проверка на существование
   if (param.value.includes(tag)) {
     //если есть ?
@@ -52,7 +50,7 @@ const switchTag = (tag) => {
   console.log('4');
 };
 
-const clickTag = (text) => {
+const clickTag = (text: string) => {
   if (text === 'Frontend') {
     switchTag('role=*Frontend');
   }
@@ -78,101 +76,216 @@ const clickTag = (text) => {
     switchTag('level=*Senior');
   }
 };
+
+const clearFn = ()=>{
+  param.value = ''
+}
 </script>
 
 <template>
-  <button
-    :class="{ ss: param.includes('role=*Frontend') }"
-    @click="switchTag('role=*Frontend')"
-  >
-    Frontend
-  </button>
-  <button
-    :class="{ ss: param.includes('role=*Fullstack') }"
-    @click="switchTag('role=*Fullstack')"
-  >
-    Fullstack
-  </button>
-  <button
-    :class="{ ss: param.includes('languages=*CSS') }"
-    @click="switchTag('languages=*CSS')"
-  >
-    CSS
-  </button>
-  <button
-    :class="{ ss: param.includes('languages=*JavaScript') }"
-    @click="switchTag('languages=*JavaScript')"
-  >
-    JavaScript
-  </button>
-  <button
-    :class="{ ss: param.includes('languages=*HTML') }"
-    @click="switchTag('languages=*HTML')"
-  >
-    HTML
-  </button>
-  <button
-    :class="{ ss: param.includes('level=*Junior') }"
-    @click="switchTag('level=*Junior')"
-  >
-    Junior
-  </button>
-  <button
-    :class="{ ss: param.includes('level=*Midweight') }"
-    @click="switchTag('level=*Midweight')"
-  >
-    Midweight
-  </button>
-  <button
-    :class="{ ss: param.includes('level=*Senior') }"
-    @click="switchTag('level=*Senior')"
-  >
-    Senior
-  </button>
-  <div v-if="!isPending && !isError">
-    <div v-for="item of data">
-      <div class="jc">
-        <div>
-          <img :src="item.logo" />
-        </div>
-        <div class="flexMain">
-          <div class="flex">
-            <div class="wh">
-              {{ item.company }}
-              {{ item.new ? 'New' : '' }}
-              {{ item.featured ? 'Featured' : '' }}
+  <img class="imageBg" src="./assets/bg-header-desktop.svg" />
+  <div class="Main">
+    <div class="container">
+      <div class="btns">
+        <div class="rightBtn">
+        <button
+          class="btn"
+          :class="{ ss: param.includes('role=*Frontend') }"
+          @click="switchTag('role=*Frontend')">
+          Frontend
+        </button>
+        <button
+          class="btn"
+          :class="{ ss: param.includes('role=*Fullstack') }"
+          @click="switchTag('role=*Fullstack')">
+          Fullstack
+        </button>
+        <button
+          class="btn"
+          :class="{ ss: param.includes('languages=*CSS') }"
+          @click="switchTag('languages=*CSS')">
+          CSS
+        </button>
+        <button
+          class="btn"
+          :class="{ ss: param.includes('languages=*JavaScript') }"
+          @click="switchTag('languages=*JavaScript')">
+          JavaScript
+        </button>
+        <button
+          class="btn"
+          :class="{ ss: param.includes('languages=*HTML') }"
+          @click="switchTag('languages=*HTML')">
+          HTML
+        </button>
+        <button
+          class="btn"
+          :class="{ ss: param.includes('level=*Junior') }"
+          @click="switchTag('level=*Junior')">
+          Junior
+        </button>
+        <button
+          class="btn"
+          :class="{ ss: param.includes('level=*Midweight') }"
+          @click="switchTag('level=*Midweight')">
+          Midweight
+        </button>
+        <button
+          class="btn"
+          :class="{ ss: param.includes('level=*Senior') }"
+          @click="switchTag('level=*Senior')">
+          Senior
+        </button>
+      </div>
+      <div class="clear">
+        <button @click="clearFn" class="btn">Clear</button>
+      </div>
+      </div>
+      <div class="rowss" v-if="!isPending && !isError">
+        <div class="sh" v-for="item of data">
+          <div class="jc">
+            <div>
+              <img :src="item.logo" />
             </div>
+            <div class="flexMain">
+              <div class="flex">
+                <div class="wh m">
+                  <span class="nameComp">{{ item.company }}</span>
+                  <span class="new">{{ item.new ? 'NEW!' : '' }}</span>
+                  <div class="featured">{{ item.featured ? 'FEATURED' : '' }}</div>
+                </div>
 
-            <div class="wh">
-              {{ item.position }}
+                <div class="wh z">
+                  {{ item.position }}
+                </div>
+
+                <div class="wh op">
+                  {{ item.postedAt + ' •' }}
+                  {{ item.contract + ' •'}}
+                  {{ item.location }}
+                </div>
+              </div>
             </div>
-
-            <div class="wh">
-              {{ item.postedAt }}
-              {{ item.contract }}
-              {{ item.location }}
+            <div class="flexEnd">
+              <div :class="{ ss: param.includes(item.role) }" class="btn" @click="clickTag(item.role)">{{ item.role }}</div>
+              <div v-for="it in item.languages">
+                <div :class="{ ss: param.includes(it) }" class="btn" @click="clickTag(it)">{{ it }}</div>
+              </div>
+              <div :class="{ ss: param.includes(item.level) }" class="btn" @click="clickTag(item.level)">{{ item.level }}</div>
             </div>
           </div>
         </div>
-        <div>
-          <div @click="clickTag(item.role)">{{ item.role }}</div>
-          <div v-for="it in item.languages">
-            <div @click="clickTag(it)">{{ it }}</div>
-          </div>
-          <div @click="clickTag(item.level)">{{ item.level }}</div>
-        </div>
+      </div>
+      <div v-else class="loader">
+        <div class="lds-ripple"><div></div><div></div></div>
+      </div>
+      <div v-if="data.length === 0">
+        <h1>No data</h1>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.ss {
+.Main {
+  display: flex;
+  justify-content: center;
+  background-color: #f0fafb;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 90%;
+}
+.rightBtn{
+  
+}
+.clear{
+
+}
+.m {
+  display: flex;
+  gap: 10px;
+}
+.sh{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 3cqh;
+}
+.btn {
+  background-color: #f0fafb;
+  border: none;
+  border-radius: 8%;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #61a59f;
+}
+.nameComp {
+  color: #61a59f;
+}
+.z {
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+}
+.btns {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 100%;
   background-color: white;
+  height: 60px;
+  margin-top:-35px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+.btn:hover{
+  background-color: #60a2a7;
+  color: white;
+}
+.op{
+  opacity: 0.5;
+}
+.new {
+  color: white;
+  background-color: #5da5a4;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 25%;
+  font-size: 11px;
+  align-self: baseline;
+}
+.rowss {
+  min-width: 100%;
+}
+.featured {
+  color: white;
+  background-color: black;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 25%;
+  font-size: 11px;
+  align-self: baseline;
+}
+.ss {
+  background-color: #60a2a7;
+  color: white;
 }
 .jc {
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
+  grid-template-columns: 0.5fr 2fr 2fr;
+  background-color: white;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding: 20px;
 }
 .flexMain {
   display: flex;
@@ -182,7 +295,68 @@ const clickTag = (text) => {
   display: flex;
   flex-wrap: wrap;
 }
+.flexEnd {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 15px;
+}
 .wh {
   width: 100%;
 }
+.imageBg {
+  background-color: #5da5a4;
+  width: 100%;
+}
+
+
+
+.lds-ripple {
+  margin-top: 50px;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
 </style>
