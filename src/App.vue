@@ -152,7 +152,7 @@ const clearFn = ()=>{
                 <div class="wh m">
                   <span class="nameComp">{{ item.company }}</span>
                   <span class="new">{{ item.new ? 'NEW!' : '' }}</span>
-                  <div class="featured">{{ item.featured ? 'FEATURED' : '' }}</div>
+                  <div v-if="item.featured" class="featured">{{ item.featured && 'FEATURED'  }}</div>
                 </div>
 
                 <div class="wh z">
@@ -218,7 +218,9 @@ const clearFn = ()=>{
   color: #61a59f;
 }
 .nameComp {
+  padding-top: 1px;
   color: #61a59f;
+  display:flex;
 }
 .z {
   color: black;
