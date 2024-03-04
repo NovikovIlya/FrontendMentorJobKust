@@ -6,7 +6,7 @@ import { ref } from 'vue';
 const param = ref('');
 
 //composables
-const { isPending, isError, data } = useQuery({
+const { isPending, isError, data} = useQuery({
   queryKey: ['todos', param],
   queryFn: () => getTodos(param),
 });
@@ -198,12 +198,7 @@ const clearFn = ()=>{
   flex-wrap: wrap;
   width: 90%;
 }
-.rightBtn{
-  
-}
-.clear{
 
-}
 .m {
   display: flex;
   gap: 10px;
