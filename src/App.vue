@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
+import { useQuery } from '@tanstack/vue-query';
 import { ref } from 'vue';
 
 //data
