@@ -179,7 +179,7 @@ const clearFn = ()=>{
       <div v-else class="loader">
         <div class="lds-ripple"><div></div><div></div></div>
       </div>
-      <div v-if="data.length === 0">
+      <div v-if="data?.length === 0">
         <h1>No data</h1>
       </div>
     </div>
